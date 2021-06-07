@@ -1,0 +1,49 @@
+
+body{
+    min-width: 300px;   
+    /* margin: 0 auto 0 auto; */
+}
+
+h1{
+    font-family: 'belligerent_madnessregular', Arial, sans-serif;  
+}
+.cont-header, .cont-footer{
+    background-color: rgb(243, 233, 241);
+    /* rgb(243, 233, 241); */
+    /* f3e9f1 */
+}
+.main{   
+    border: 1px solid red;
+}
+
+.card:hover{    
+  transform: scale(1.03);
+}
+.card{
+    transition: 0.2s;
+}
+
+/* class pour avoir le texte de description des cards sur 2 lignes avec un truncate */
+.truncate-overflow {
+	--max-lines: 3;
+	position: relative;    
+	max-height: calc( 1.5rem * var(--max-lines));
+    text-align: justify;
+	overflow: hidden;
+	padding-right: 1rem; /* space for ellipsis */
+    background: linear-gradient(white, rgba(224, 223, 223,0.5),white);
+}
+.truncate-overflow::before {
+	position: absolute;
+	content: "...";
+	inset-block-end: 0; /* "bottom" */
+	inset-inline-end: 0; /* "right" */
+}
+.truncate-overflow::after {
+	content: "";
+	position: absolute;
+	right: 0;
+	width: 1rem;
+	height: 1rem;
+	/* background: white; */
+}
