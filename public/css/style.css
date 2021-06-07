@@ -31,7 +31,7 @@ h1{
     text-align: justify;
 	overflow: hidden;
 	padding-right: 1rem; /* space for ellipsis */
-    background: linear-gradient(white, rgba(224, 223, 223,0.5),white);
+    /* background: linear-gradient(white, grey); */
 }
 .truncate-overflow::before {
 	position: absolute;
