@@ -1,31 +1,32 @@
 
 body{
-    min-width: 300px;   
-    /* margin: 0 auto 0 auto; */
+    min-width: 300px; 
 }
 
 h1{
-    font-family: 'belligerent_madnessregular', Arial, sans-serif;  
+    font-family: 'belligerent_madnessregular', Arial, sans-serif;   
 }
 .cont-header, .cont-footer{
-    background-color: rgb(243, 233, 241);
-    /* rgb(243, 233, 241); */
-    /* f3e9f1 */
-}
-.main{   
-    border: 1px solid red;
+    background-color: rgb(243, 233, 241);  
 }
 
 .card:hover{    
   transform: scale(1.03);
 }
 .card{
+    max-width: 300px;
     transition: 0.2s;
 }
+.img-camera,.lien-photo{
+        width: 250px;
+}
 
+#btnacceuil, #btnajoutpanier{
+	min-width: 150px;
+}
 /* class pour avoir le texte de description des cards sur 2 lignes avec un truncate */
 .truncate-overflow {
-	--max-lines: 3;
+	--max-lines: 2;
 	position: relative;    
 	max-height: calc( 1.5rem * var(--max-lines));
     text-align: justify;
