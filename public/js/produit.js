@@ -1,3 +1,18 @@
+//affiche un message ,typeMessClassNom represente une class pour la gestion de l'affichage
+const affichageAlerte = (message, typeMessClassNom) => {
+  const div = document.createElement("div");
+  div.className = `alert alert-${typeMessClassNom} rounded`;
+  div.appendChild(document.createTextNode(message));
+
+  // const containerMain=document.getElementById('main-container')
+  const insertApres = document.getElementById("img-nom-produit");
+  insertApres.parentNode.insertBefore(div, insertApres.nextSibling);
+  // suprime le neud (message) apres 3 secondes
+  setTimeout(() => {
+    document.querySelector(".alert").remove();
+  }, 3000);
+};
+
 //compte les produit dans le panier et l'affiche
 const comptePanier = () => {
   let temppanier = JSON.parse(localStorage.getItem("panier"));
@@ -7,30 +22,69 @@ const comptePanier = () => {
     "nbre-produits-panier"
   ).textContent = `(${tempComptePanier})`;
 };
-//test si le produit existe dans le painer et change le textcontent du boutton "ajouter et ouvrir panier"
-const modBouttonSiIdExiste = () => {
+
+//test si le produit existe dans le painer, change le textcontent du boutton "ajouter et ouvrir panier" et ajoute "ajouté au panier"
+const SiIdDejaDansPanier = (change) => {
   let temppanier = JSON.parse(localStorage.getItem("panier"));
   let ret = -1;
-  console.log(nom_camera.dataset.id_camera);
   if (temppanier != null)
-    ret = temppanier.indexOf(nom_camera.dataset.id_camera);
-  if (ret > -1){
+    ret = temppanier.map((e) => e._id).indexOf(nom_camera.dataset.id_camera);
+  if (ret > -1) {
+   if (change==null)inputChoseLense.value = temppanier[ret].lense;
+
+    if (document.getElementById("ajout-panier") == null) {
+      let ajoutPanier = document.createElement("div");
+      ajoutPanier.id = "ajout-panier";
+      ajoutPanier.className = "text-success text-center";
+      ajoutPanier.innerHTML =
+        '<i class="fas fa-cart-arrow-down display-6"></i><p>Ajouté au panier</p>';
+      document.getElementById("img-nom-produit").appendChild(ajoutPanier);
+    }
+
+    //si la lentille correspond a la lentille du panier
+    if (inputChoseLense.value == temppanier[ret].lense) {
       btn_ajout_panier_ouvrir.innerHTML = `<i class="fas fa-shopping-cart"></i> Ouvrir le panier`;
-    btn_ajout_panier.remove();
-    document.getElementById("img-nom-produit").innerHTML+='<div class="text-success text-center"><i class="fas fa-cart-arrow-down display-6"></i><p>Ajouté au panier</p></div>';
-  }  
+      btn_ajout_panier.style = "display:none";
+    } else {
+      btn_ajout_panier.style = "display:block";
+      btn_ajout_panier.innerHTML = `<i class="fas fa-shopping-cart"></i> <i class="fas fa-sync-alt"></i> Modifier l'article`;
+      btn_ajout_panier_ouvrir.innerHTML = `<i class="fas fa-shopping-cart"></i> <i class="fas fa-sync-alt"></i> Modifier et ouvrir le panier`;
+    }
+  }
 };
 
 const ajoutProduitPanier = () => {
+  if (inputChoseLense.value == "...") {
+    affichageAlerte(
+      "Veuillez choisir une lentille avant de l'ajouter au panier",
+      "danger"
+    );
+    return false;
+  }
+
   let temppanier = JSON.parse(localStorage.getItem("panier"));
+  let indextab = -1;
+
   if (temppanier != null) {
-    if (temppanier.indexOf(nom_camera.dataset.id_camera) == -1) {
-      temppanier.push(nom_camera.dataset.id_camera);
+    indextab = temppanier
+      .map((e) => e._id)
+      .indexOf(nom_camera.dataset.id_camera);
+    if (indextab == -1) {
+      temppanier.push({
+        _id: nom_camera.dataset.id_camera,
+        lense: inputChoseLense.value,
+      });
+    } else {
+      temppanier[indextab].lense = inputChoseLense.value;
+      affichageAlerte("Le type de lentille a bien été modifié", "success");
     }
   } else {
-    temppanier = [nom_camera.dataset.id_camera];
+    temppanier = [
+      { _id: nom_camera.dataset.id_camera, lense: inputChoseLense.value },
+    ];
   }
   localStorage.setItem("panier", JSON.stringify(temppanier));
+  return true;
 };
 
 //recupere l'id du produit dans l'argument de l'url de la page
@@ -71,7 +125,7 @@ const afficheProduit = (camera) => {
   //4-description du produit
   descProduit.textContent = camera.description;
   //5-
-  modBouttonSiIdExiste();
+  SiIdDejaDansPanier();
 };
 
 //recupere le produit et affiche les données
@@ -93,13 +147,14 @@ const getProductByIdApi = async () => {
 
 btn_ajout_panier.addEventListener("click", () => {
   ajoutProduitPanier();
-  modBouttonSiIdExiste()
+  SiIdDejaDansPanier();
   comptePanier();
 });
 btn_ajout_panier_ouvrir.addEventListener("click", () => {
-  ajoutProduitPanier();
-  document.location.href = "../index.html";
+  if (ajoutProduitPanier() == true) document.location.href = "../index.html";
 });
+
+inputChoseLense.addEventListener("change", () => SiIdDejaDansPanier(true));
 
 window.addEventListener("DOMContentLoaded", () => {
   // Une fois que la page est chargé, on recupère la liste des produits sur le serveur
