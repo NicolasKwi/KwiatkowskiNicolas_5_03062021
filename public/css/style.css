@@ -1,6 +1,6 @@
 
 body{
-    min-width: 300px; 
+    min-width: 350px; 
 }
 
 h1{
@@ -10,15 +10,22 @@ h1{
     background-color: rgb(243, 233, 241);  
 }
 
-.card:hover{    
+.card-perso:hover{    
   transform: scale(1.03);
 }
-.card{
+.card-perso{
     max-width: 300px;
     transition: 0.2s;
 }
 .img-camera,.lien-photo{
         width: 250px;
+}
+
+.thumb-panier{
+	max-width: 150px;
+}
+.max-taille-panier{
+	max-width: 500px;
 }
 
 #btnacceuil, #btnajoutpanier{

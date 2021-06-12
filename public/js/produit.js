@@ -1,3 +1,5 @@
+// stock les information du produit
+let produitDonne = null;
 //affiche un message ,typeMessClassNom represente une class pour la gestion de l'affichage
 const affichageAlerte = (message, typeMessClassNom) => {
   const div = document.createElement("div");
@@ -28,9 +30,10 @@ const SiIdDejaDansPanier = (change) => {
   let temppanier = JSON.parse(localStorage.getItem("panier"));
   let ret = -1;
   if (temppanier != null)
-    ret = temppanier.map((e) => e._id).indexOf(nom_camera.dataset.id_camera);
+    ret = temppanier.map((e) => e._id).indexOf(nom_camera.dataset.id_camera);  
   if (ret > -1) {
-   if (change==null)inputChoseLense.value = temppanier[ret].lense;
+    
+    if (change == null) inputChoseLense.value = temppanier[ret].lense;
 
     if (document.getElementById("ajout-panier") == null) {
       let ajoutPanier = document.createElement("div");
@@ -70,18 +73,18 @@ const ajoutProduitPanier = () => {
       .map((e) => e._id)
       .indexOf(nom_camera.dataset.id_camera);
     if (indextab == -1) {
-      temppanier.push({
-        _id: nom_camera.dataset.id_camera,
-        lense: inputChoseLense.value,
-      });
+      console.log('ad');
+      produitDonne.lense = inputChoseLense.value;     
+      temppanier.push(produitDonne);
     } else {
+      console.log('mod');
       temppanier[indextab].lense = inputChoseLense.value;
       affichageAlerte("Le type de lentille a bien été modifié", "success");
     }
   } else {
-    temppanier = [
-      { _id: nom_camera.dataset.id_camera, lense: inputChoseLense.value },
-    ];
+    console.log('nouv');
+    produitDonne.lense = inputChoseLense.value;
+    temppanier = [produitDonne];
   }
   localStorage.setItem("panier", JSON.stringify(temppanier));
   return true;
@@ -101,6 +104,14 @@ const afficheProduit = (camera) => {
   const choixLentille = document.getElementById("inputChoseLense");
   const prixProduit = document.getElementById("prix-produit");
   const descProduit = document.getElementById("desc_produit");
+
+  produitDonne = {
+    _id: camera._id,
+    name: camera.name,
+    lense: "",
+    imageUrl: camera.imageUrl,
+    price: camera.price,
+  };
 
   //1-image et nom du produit
   enteteProduit.innerHTML = `<a class="lien-photo" href="${camera.imageUrl}"><img src="${camera.imageUrl}" alt="Photo de ${camera.name}" class="col-4 my-3 img-camera img-thumbnail">
@@ -130,7 +141,7 @@ const afficheProduit = (camera) => {
 
 //recupere le produit et affiche les données
 const getProductByIdApi = async () => {
-  fetch("http://localhost:3000/api/cameras/" + getParameter_id())
+  await fetch("http://localhost:3000/api/cameras/" + getParameter_id())
     .then(function (res) {
       if (res.ok) {
         return res.json();
@@ -151,7 +162,8 @@ btn_ajout_panier.addEventListener("click", () => {
   comptePanier();
 });
 btn_ajout_panier_ouvrir.addEventListener("click", () => {
-  if (ajoutProduitPanier() == true) document.location.href = "../index.html";
+  if (ajoutProduitPanier() == true)
+    document.location.href = "../pages/panier.html";
 });
 
 inputChoseLense.addEventListener("change", () => SiIdDejaDansPanier(true));

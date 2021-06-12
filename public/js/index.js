@@ -9,7 +9,7 @@ const comptePanier = () => {
 const listProduit = document.getElementById("cont-list");
 
 const getProductsApi = async () => {
-  fetch("http://localhost:3000/api/cameras")
+ await fetch("http://localhost:3000/api/cameras")
     .then(function (res) {
       if (res.ok) {
         return res.json();
@@ -30,7 +30,7 @@ const getProductsApi = async () => {
 const afficheListeCamera = (camera) => {
   if (camera != undefined) {
     // Ajoute la card du produit dans la liste des produits
-    listProduit.innerHTML += `<a href="./pages/produit.html?_id=${camera._id}" class="card col-9 col-md-4 col-lg-3 m-2 shadow text-decoration-none text-dark">
+    listProduit.innerHTML += `<a href="./pages/produit.html?_id=${camera._id}" class="card card-perso col-9 col-md-4 col-lg-3 m-2 shadow text-decoration-none text-dark">
                                 <img src="${camera.imageUrl}" alt="Image de ${camera.name}" class="card-img-top" />
                                 <div class="card-body">
                                   <h3 class="card-title text-center text-primary">${camera.name}</h3>                                 
