@@ -1,0 +1,182 @@
+<<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="description" content="" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="../public/images/Logo_orinoco_min.png"
+    />
+    <link
+      rel="stylesheet"
+      href="../public/bootstrap-5.0.1-dist/css/bootstrap.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="../public/fonts/belligerentmadness_regular_macroman/stylesheet.css"
+      type="text/css"
+    />
+
+    <!--pour les icons font awesome-->
+    <link
+      rel="stylesheet"
+      href="../public/fontawesome-free-5.15.2-web/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="../public/css/style.css" />
+
+    <script
+      defer
+      src="../public/bootstrap-5.0.1-dist/js/bootstrap.bundle.min.js"
+    ></script>
+    <script defer src="../public/js/commande.js"></script>
+
+    <title>Commande</title>
+  </head>
+  <body>
+    <!-- ****** HEADER Debut ****** -->
+    <div class="container-lg cont-header">
+      <header>
+        <div class="row">
+          <nav class="navbar col">
+            <img
+              src="../public/images/Logo_orinoco_min.png"
+              alt="Logo Orinoco"
+              class="navbar-brand"
+            />
+            <ul class="nav">
+              <li class="nav-item">
+                <a href="../index.html" class="nav-link" aria-current="page"
+                  ><i class="fas fa-home"></i> Accueil</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </header>
+    </div>
+    <!-- ****** HEADER Fin ****** -->
+    <div class="container-lg">
+      <h1 class="col-8 text-center border-bottom mb-3 mt-5 mx-auto">
+        <i class="fas fa-shopping-bag text-primary"></i>
+        Votre commande
+      </h1>
+      <div class="row">
+        <!-- ----- conteneur reponse ------ -->
+        <div id="conteneur-reponse" class="bg-light p-3">
+          <div
+            class="
+              reponse-affichage
+              d-flex
+              flex-wrap flex-column
+              align-items-center
+            "
+          >
+            <h2
+              id="status-commande"
+              class="
+                border
+                bg-success bg-gradient
+                text-white text-center
+                py-3
+                px-4
+                my-3
+              "
+            ></h2>
+            <div id="reponse-details" class="border reponse-details-ok">
+              <div id="rep-serveur">
+                <h3 id="details-entete" class="fs-5 p-2"></h3>
+                <p id="details-corps" class="p-2 m-2 text-justify">
+                  Nous vous remercions pour votre confiance et vous souhaitons
+                  une bonne réception de votre commande dans les prochains
+                  jours.
+                  <br /><br />
+                  A bientôt sur <span class="fs-3 font-orinoco">Orinoco</span>
+                </p>
+              </div>
+              <div id="detail-commande" class="border m-4 bg-white">
+                <div class="table-responsive">
+                  <table
+                    class="
+                      table table-sm table-bordered table-striped
+                      border-secondary
+                    "
+                  >
+                    <caption class="caption-top text-center text-primary">
+                      <i class="fas fa-list mx-2"></i>
+                      Détail de la commande
+                    </caption>
+                    <thead>
+                      <tr class="bg-secondary bg-gradient text-white fs-5">
+                        <th class="font-orinoco text-center">Articles</th>
+                        <th class="font-orinoco text-center">Prix</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody-details">
+                      <!-- -- injection des articles ici --  -->
+                    </tbody>
+                    <tfoot>
+                      <tr class="bg-secondary bg-gradient text-white fs-5">
+                        <td class="text-end fw-bold">Total :</td>
+                        <td id="total-details" class="fw-bold text-center"></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- -----fin conteneur reponse ----- -->
+        <div class="d-flex flex-wrap align-items-center bg-light my-3">
+          <a
+            href="../index.html"
+            class="btn btn-outline-secondary btn-lg m-4 shadow-sm"
+            ><i class="fas fa-arrow-circle-left"></i> Retour à l'acceuil</a
+          >
+        </div>
+      </div>
+    </div>
+    <!-- ****** FOOTER Debut ****** -->
+    <div class="container-lg cont-footer mt-4">
+      <div class="row">
+        <footer>
+          <div class="col-6 col-md-12 mx-auto">
+            <ul
+              class="
+                list-inline
+                d-flex
+                flex-wrap flex-column flex-md-row
+                justify-content-center
+                pt-2
+              "
+            >
+              <li class="list-inline-item m-3">
+                <a class="text-decoration-none" href="#">À propos</a>
+              </li>
+              <li class="list-inline-item m-3">
+                <a class="text-decoration-none" href="#">Vie privée</a>
+              </li>
+              <li class="list-inline-item m-3">
+                <a class="text-decoration-none" href="#"
+                  >Conditions d'utilisations</a
+                >
+              </li>
+              <li class="list-inline-item m-3">
+                <a class="text-decoration-none" href="mailto:camera@orinoco.com"
+                  >Nous contacter</a
+                >
+              </li>
+            </ul>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <!-- ****** FOOTER Fin ****** -->
+  </body>
+</html>

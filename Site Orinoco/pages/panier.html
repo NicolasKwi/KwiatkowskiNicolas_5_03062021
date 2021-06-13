@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="description" content="" />
+    <link rel="icon" type="image/png" href="../public/images/Logo_orinoco_min.png" />
+    <link
+      rel="stylesheet"
+      href="../public/bootstrap-5.0.1-dist/css/bootstrap.min.css"
+    />
+
+    <link rel="stylesheet" href="../public/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="../public/fonts/belligerentmadness_regular_macroman/stylesheet.css"
+      type="text/css"
+    />
+
+    <!--pour les icons font awesome-->
+    <link
+      rel="stylesheet"
+      href="../public/fontawesome-free-5.15.2-web/css/all.min.css"
+    />
+
+    <script
+      defer
+      src="../public/bootstrap-5.0.1-dist/js/bootstrap.bundle.min.js"
+    ></script>
+    <script defer src="../public/js/panier.js"></script>
+
+    <title>Panier</title>
+  </head>
+  <body>
+    <!-- ****** HEADER Debut ****** -->
+    <div class="container-lg cont-header">
+      <header>
+        <div class="row">
+          <nav class="navbar col">
+            <img
+              src="../public/images/Logo_orinoco_min.png"
+              alt="Logo Orinoco"
+              class="navbar-brand"
+            />
+            <ul class="nav">
+              <li class="nav-item">
+                <a href="../index.html" class="nav-link" aria-current="page"
+                  ><i class="fas fa-home"></i> Accueil</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </header>
+    </div>
+    <!-- ****** HEADER Fin ****** -->
+    <div class="container-lg">
+      <h1 class="col-8 text-center border-bottom mb-3 mt-5 mx-auto">
+        <i class="fas fa-shopping-cart text-primary"></i> Votre panier
+      </h1>
+      <div class="row">
+        <div id="liste-des-produits" class="bg-light p-3">
+          <!-- les card s'insere ici -->
+        </div>
+        <h1
+          id="titre-fomulaire"
+          class="col-8 text-center border-bottom mb-3 mt-5 mx-auto"
+        >
+          <i class="fas fa-edit text-primary"></i> Formulaire de commande
+        </h1>
+        <div
+          id="conteneur-formulaire"
+          class="d-flex flex-wrap flex-column align-items-center bg-light p-3"
+        >
+          <!-- debut form -->
+          <form id="contact" class="border p-3 mx-4 my-2 shadow-sm">
+            <p class="fs-6 text-muted lead fst-italic">
+              Veuillez remplir les informations requises pour valider la
+              commande
+            </p>
+            <div class="d-flex flex-wrap mt-4 gap-4">
+              <div class="form-group">
+                <label for="lastname">Nom</label>
+                <input type="text" id="lastname" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="firstname">Prénom</label>
+                <input type="text" id="firstname" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group mt-2 w-75">
+              <label for="email">E-mail</label>
+              <input type="email" id="email" class="form-control" />
+            </div>
+            <div class="form-group mt-4">
+              <label for="address">Adresse</label>
+              <input type="text" id="address" class="form-control" />
+            </div>
+            <div class="form-group my-2 w-75">
+              <label for="city">Ville</label>
+              <input type="text" id="city" class="form-control" />
+            </div>
+          </form>
+          <!-- fin form  -->
+
+          <button
+            id="btn_valide_commande"
+            class="btn btn-outline-success btn-lg m-3 shadow"
+            type="button"
+          >
+            <i class="fas fa-shopping-cart"></i> Valider la commande
+          </button>
+        </div>
+
+        <div class="d-flex flex-wrap align-items-center bg-light my-3">
+          <a
+            href="../index.html"
+            class="btn btn-outline-secondary btn-lg m-4 shadow-sm"
+            ><i class="fas fa-arrow-circle-left"></i> Retour à l'acceuil</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- ****** FOOTER Debut ****** -->
+    <div class="container-lg cont-footer mt-4">
+      <div class="row">
+        <footer>
+          <div class="col-6 col-md-12 mx-auto">
+            <ul
+              class="
+                list-inline
+                d-flex
+                flex-wrap flex-column flex-md-row
+                justify-content-center
+                pt-2
+              "
+            >
+              <li class="list-inline-item m-3">
+                <a class="text-decoration-none" href="#">À propos</a>
+              </li>
+              <li class="list-inline-item m-3">
+                <a class="text-decoration-none" href="#">Vie privée</a>
+              </li>
+              <li class="list-inline-item m-3">
+                <a class="text-decoration-none" href="#"
+                  >Conditions d'utilisations</a
+                >
+              </li>
+              <li class="list-inline-item m-3">
+                <a class="text-decoration-none" href="mailto:camera@orinoco.com"
+                  >Nous contacter</a
+                >
+              </li>
+            </ul>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <!-- ****** FOOTER Fin ****** -->
+  </body>
+</html>
