@@ -146,7 +146,12 @@ const getProductByIdApi = async () => {
       }
     })
     .then(function (data) {
-      afficheProduit(data);
+      if (data){
+  afficheProduit(data);
+      }else{
+        throw "Le produit n'a pas pu etre récupéré"
+      }
+    
     })
     .catch(function (err) {
       // Une erreur est survenue

@@ -108,7 +108,12 @@ const postCommande = (order) => {
       }
     })
     .then(function (data) {
-      traitementReponseOk(data);
+      if (data){
+         traitementReponseOk(data);
+      }else{
+        throw "Les données de la commande n'ont pas pu etre récupéré"
+      }
+     
     })
     .catch(function (err) {
       // Une erreur est survenue
@@ -125,4 +130,8 @@ function validationCommande() {
         "Les données enregistrés de votre panier n'ont pas pu être récupéré",true
       );
 }
+window.addEventListener("DOMContentLoaded", () => {
+    // Une fois que la page est chargé
 validationCommande();
+});
+
