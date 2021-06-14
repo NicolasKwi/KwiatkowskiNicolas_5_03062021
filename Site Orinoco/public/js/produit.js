@@ -30,9 +30,8 @@ const SiIdDejaDansPanier = (change) => {
   let temppanier = JSON.parse(localStorage.getItem("panier"));
   let ret = -1;
   if (temppanier != null)
-    ret = temppanier.map((e) => e._id).indexOf(nom_camera.dataset.id_camera);  
+    ret = temppanier.map((e) => e._id).indexOf(nom_camera.dataset.id_camera);
   if (ret > -1) {
-    
     if (change == null) inputChoseLense.value = temppanier[ret].lense;
 
     if (document.getElementById("ajout-panier") == null) {
@@ -73,14 +72,14 @@ const ajoutProduitPanier = () => {
     indextab = temppanier
       .map((e) => e._id)
       .indexOf(nom_camera.dataset.id_camera);
-    if (indextab == -1) {  
-      produitDonne.lense = inputChoseLense.value;     
+    if (indextab == -1) {
+      produitDonne.lense = inputChoseLense.value;
       temppanier.push(produitDonne);
-    } else {    
+    } else {
       temppanier[indextab].lense = inputChoseLense.value;
       affichageAlerte("Le type de lentille a bien été modifié", "success");
     }
-  } else {   
+  } else {
     produitDonne.lense = inputChoseLense.value;
     temppanier = [produitDonne];
   }
@@ -98,43 +97,45 @@ function getParameter_id() {
 
 // fonction principal pour afficher les informations du produit
 const afficheProduit = (camera) => {
-  const enteteProduit = document.getElementById("img-nom-produit");
-  const choixLentille = document.getElementById("inputChoseLense");
-  const prixProduit = document.getElementById("prix-produit");
-  const descProduit = document.getElementById("desc_produit");
+  if (camera._id && camera.name && camera.imageUrl && camera.price && camera.lenses) {
+    const enteteProduit = document.getElementById("img-nom-produit");
+    const choixLentille = document.getElementById("inputChoseLense");
+    const prixProduit = document.getElementById("prix-produit");
+    const descProduit = document.getElementById("desc_produit");
 
-  produitDonne = {
-    _id: camera._id,
-    name: camera.name,
-    lense: "",
-    imageUrl: camera.imageUrl,
-    price: camera.price,
-  };
+    produitDonne = {
+      _id: camera._id,
+      name: camera.name,
+      lense: "",
+      imageUrl: camera.imageUrl,
+      price: camera.price,
+    };
 
-  //1-image et nom du produit
-  enteteProduit.innerHTML = `<a class="lien-photo" href="${camera.imageUrl}"><img src="${camera.imageUrl}" alt="Photo de ${camera.name}" class="col-4 my-3 img-camera img-thumbnail">
+    //1-image et nom du produit
+    enteteProduit.innerHTML = `<a class="lien-photo" href="${camera.imageUrl}"><img src="${camera.imageUrl}" alt="Photo de ${camera.name}" class="col-4 my-3 img-camera img-thumbnail">
                             </a><h1 id="nom_camera" data-id_camera="${camera._id}" class="col-8 text-center border-bottom my-3">${camera.name}</h1>`;
 
-  //2-pour geré l'affichage des options de lentilles
-  if (camera.lenses.length == 1) {
-    choixLentille.setAttribute("disabled", "disabled");
-    choixLentille.innerHTML = `<option selected>${camera.lenses[0]}</option>`;
-  } else if (camera.lenses.length > 1) {
-    choixLentille.innerHTML = "<option hidden selected>...</option>";
-    camera.lenses.forEach((element) => {
-      choixLentille.innerHTML += `<option>${element}</option>`;
-    });
-  } else {
-    choixLentille.parentElement.remove();
+    //2-pour geré l'affichage des options de lentilles
+    if (camera.lenses.length == 1) {
+      choixLentille.setAttribute("disabled", "disabled");
+      choixLentille.innerHTML = `<option selected>${camera.lenses[0]}</option>`;
+    } else if (camera.lenses.length > 1) {
+      choixLentille.innerHTML = "<option hidden selected>...</option>";
+      camera.lenses.forEach((element) => {
+        choixLentille.innerHTML += `<option>${element}</option>`;
+      });
+    } else {
+      choixLentille.parentElement.remove();
+    }
+    // 3-prix du produit
+    prixProduit.textContent = `Prix : ${(camera.price / 100)
+      .toString()
+      .replace(".", ",")} €`;
+    //4-description du produit
+    descProduit.textContent = camera.description;
+    //5-
+    SiIdDejaDansPanier();
   }
-  // 3-prix du produit
-  prixProduit.textContent = `Prix : ${(camera.price / 100)
-    .toString()
-    .replace(".", ",")} €`;
-  //4-description du produit
-  descProduit.textContent = camera.description;
-  //5-
-  SiIdDejaDansPanier();
 };
 
 //recupere le produit et affiche les données
@@ -146,12 +147,11 @@ const getProductByIdApi = async () => {
       }
     })
     .then(function (data) {
-      if (data){
-  afficheProduit(data);
-      }else{
-        throw "Le produit n'a pas pu etre récupéré"
+      if (data) {
+        afficheProduit(data);
+      } else {
+        throw "Le produit n'a pas pu etre récupéré";
       }
-    
     })
     .catch(function (err) {
       // Une erreur est survenue

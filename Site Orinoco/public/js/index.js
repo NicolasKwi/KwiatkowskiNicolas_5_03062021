@@ -23,7 +23,7 @@ const getProductsApi = async () => {
         data.forEach((element) => {
           afficheListeCamera(element);
         });
-      }else{
+      } else {
         throw "Les produits n'ont pas pu etre recuperé";
       }
     })
@@ -34,7 +34,15 @@ const getProductsApi = async () => {
 };
 
 const afficheListeCamera = (camera) => {
-  if (camera != undefined) {
+  if (
+    camera != null &&
+    camera._id &&
+    camera.name &&
+    camera.lenses &&
+    camera.price &&
+    camera.description &&
+    camera.imageUrl
+  ) {
     // Ajoute la card du produit dans la liste des produits
     listProduit.innerHTML += `<a href="./pages/produit.html?_id=${
       camera._id

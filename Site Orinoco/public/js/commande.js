@@ -121,7 +121,7 @@ const postCommande = (order) => {
     });
 };
 
-//lol
+//
 function validationCommande() {
   //cree l'objet commande a partir du local storage et lance le post, sinon affiche une erreur
   recupCommande()
