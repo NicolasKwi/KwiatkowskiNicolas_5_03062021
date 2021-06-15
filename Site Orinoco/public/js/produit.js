@@ -1,5 +1,6 @@
 // stock les information du produit
 let produitDonne = null;
+const quantiteproduit = document.getElementById("quantite-produit");
 //affiche un message ,typeMessClassNom represente une class pour la gestion de l'affichage
 const affichageAlerte = (message, typeMessClassNom) => {
   const div = document.createElement("div");
@@ -33,7 +34,7 @@ const SiIdDejaDansPanier = (change) => {
     ret = temppanier.map((e) => e._id).indexOf(nom_camera.dataset.id_camera);
   if (ret > -1) {
     if (change == null) inputChoseLense.value = temppanier[ret].lense;
-
+   
     if (document.getElementById("ajout-panier") == null) {
       let ajoutPanier = document.createElement("div");
       ajoutPanier.id = "ajout-panier";
@@ -44,13 +45,16 @@ const SiIdDejaDansPanier = (change) => {
     }
 
     //si la lentille correspond a la lentille du panier
-    if (inputChoseLense.value == temppanier[ret].lense) {
-      btn_ajout_panier_ouvrir.innerHTML = `<i class="fas fa-shopping-cart"></i> Ouvrir le panier`;
-      btn_ajout_panier.style = "display:none";
-    } else {
+    if (
+      inputChoseLense.value != temppanier[ret].lense ||
+      quantiteproduit.value != temppanier[ret].quantity
+    ) {
       btn_ajout_panier.style = "display:block";
       btn_ajout_panier.innerHTML = `<i class="fas fa-shopping-cart"></i> <i class="fas fa-sync-alt"></i> Modifier l'article`;
       btn_ajout_panier_ouvrir.innerHTML = `<i class="fas fa-shopping-cart"></i> <i class="fas fa-sync-alt"></i> Modifier et ouvrir le panier`;
+    } else {
+      btn_ajout_panier_ouvrir.innerHTML = `<i class="fas fa-shopping-cart"></i> Ouvrir le panier`;
+      btn_ajout_panier.style = "display:none";
     }
   }
 };
@@ -74,13 +78,16 @@ const ajoutProduitPanier = () => {
       .indexOf(nom_camera.dataset.id_camera);
     if (indextab == -1) {
       produitDonne.lense = inputChoseLense.value;
+      produitDonne.quantity = quantiteproduit.value;
       temppanier.push(produitDonne);
     } else {
       temppanier[indextab].lense = inputChoseLense.value;
-      affichageAlerte("Le type de lentille a bien été modifié", "success");
+      temppanier[indextab].quantity = quantiteproduit.value;
+      affichageAlerte("L'article a bien été modifié", "success");
     }
   } else {
     produitDonne.lense = inputChoseLense.value;
+    produitDonne.quantity = quantiteproduit.value;
     temppanier = [produitDonne];
   }
   localStorage.setItem("panier", JSON.stringify(temppanier));
@@ -97,7 +104,13 @@ function getParameter_id() {
 
 // fonction principal pour afficher les informations du produit
 const afficheProduit = (camera) => {
-  if (camera._id && camera.name && camera.imageUrl && camera.price && camera.lenses) {
+  if (
+    camera._id &&
+    camera.name &&
+    camera.imageUrl &&
+    camera.price &&
+    camera.lenses
+  ) {
     const enteteProduit = document.getElementById("img-nom-produit");
     const choixLentille = document.getElementById("inputChoseLense");
     const prixProduit = document.getElementById("prix-produit");
@@ -109,6 +122,7 @@ const afficheProduit = (camera) => {
       lense: "",
       imageUrl: camera.imageUrl,
       price: camera.price,
+      quantity: 1,
     };
 
     //1-image et nom du produit
@@ -127,8 +141,15 @@ const afficheProduit = (camera) => {
     } else {
       choixLentille.parentElement.remove();
     }
+    // quantité du produit
+    // let tempQuantiteArticle = 1;
+    // if (quantiteproduit.value) tempQuantiteArticle = quantiteproduit.value;
+
     // 3-prix du produit
-    prixProduit.textContent = `Prix : ${(camera.price / 100)
+    prixProduit.textContent = `Prix : ${(
+      (camera.price) /
+      100
+    )
       .toString()
       .replace(".", ",")} €`;
     //4-description du produit
@@ -158,7 +179,19 @@ const getProductByIdApi = async () => {
       alert(err);
     });
 };
+// controle de validité de quantité
+const controleInputQuantite = (e) => {
+  let valeurInput = 1;
+  if (e.target.value && !isNaN(e.target.value)) {
+    valeurInput = eval(e.target.value);
+    let maxInput = eval(e.target.max);
+    let minInput = eval(e.target.min);
 
+    if (valeurInput < minInput) valeurInput = minInput;
+    if (valeurInput > maxInput) valeurInput = maxInput;
+  }
+  return valeurInput;
+};
 btn_ajout_panier.addEventListener("click", () => {
   ajoutProduitPanier();
   SiIdDejaDansPanier();
@@ -167,6 +200,36 @@ btn_ajout_panier.addEventListener("click", () => {
 btn_ajout_panier_ouvrir.addEventListener("click", () => {
   if (ajoutProduitPanier() == true)
     document.location.href = "../pages/panier.html";
+});
+quantiteproduit.addEventListener("change", (e) => {
+  //prix du produit
+  e.target.value = controleInputQuantite(e);
+
+  document.getElementById("prix-produit").textContent = `Prix : ${(
+    (produitDonne.price * controleInputQuantite(e)) /
+    100
+  )
+    .toString()
+    .replace(".", ",")} €`;
+  SiIdDejaDansPanier(true);
+});
+quantiteproduit.addEventListener("keydown", (e) => {
+  if (isNaN(e.key)) {
+    if (e.key != "Backspace" && e.key != "Delete") {
+      e.preventDefault();
+    }
+  } else {
+    e.target.value += e.key;
+    e.target.value = controleInputQuantite(e);
+    document.getElementById("prix-produit").textContent = `Prix : ${(
+      (produitDonne.price * e.target.value) /
+      100
+    )
+      .toString()
+      .replace(".", ",")} €`;
+    e.preventDefault();
+  }
+  SiIdDejaDansPanier(true);
 });
 
 inputChoseLense.addEventListener("change", () => SiIdDejaDansPanier(true));

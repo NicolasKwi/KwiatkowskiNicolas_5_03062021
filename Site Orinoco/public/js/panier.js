@@ -1,7 +1,7 @@
 // stock le panier
 let ListePanier = [];
 let totalprix = 0;
-
+let nbrProduit = 0;
 let ListeProduitPanier = document.getElementById("liste-des-produits");
 
 //recupere la liste du panier
@@ -44,11 +44,14 @@ const cardProduit = (produit) => {
                           <div class="flex-grow-1 d-flex">
                             <div class="border p-2 m-2">
                               <p class="fs-5 my-0 text-black-50">Prix : ${(
-                                produit.price / 100
+                                (produit.price * produit.quantity) /
+                                100
                               )
                                 .toString()
                                 .replace(".", ",")} €</p>
-                              <p class="fs-6 my-0 text-black-50">Quantité : 1</p>
+                              <p class="fs-6 my-0 text-black-50">Quantité : ${
+                                produit.quantity
+                              }</p>
                             </div>
                           </div>
                           <div class="m-2">
@@ -76,7 +79,7 @@ const afficheTotalPorduit = () => {
                                           <div class="d-flex flex-wrap border m-3 p-2 shadow rounded-3">
                                               <p class="fs-5 mx-1 my-0 ">Quantité d'articles :</p>
                                               <p class="fs-5 mx-1 my-0">${
-                                                ListePanier.length
+                                                nbrProduit
                                               }</p>
                                           </div>
                                           <div class="flex-grow-1">
@@ -106,9 +109,11 @@ const afficheCardsproduits = async () => {
       // let tempProduitApi = await getProductByIdApi(element._id);
       if (element != null) {
         ListeProduitPanier.innerHTML += cardProduit(element);
-        totalprix += element.price;
+        totalprix += element.price *  parseInt(element.quantity);     
+        nbrProduit += parseInt(element.quantity);
       }
     }
+    console.log(nbrProduit);
     afficheTotalPorduit();
   } else {
     ListeProduitPanier.innerHTML =

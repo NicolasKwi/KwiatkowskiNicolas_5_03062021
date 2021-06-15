@@ -1,12 +1,12 @@
 //objet global qui stock la commande à envoyer
 let commande = null;
+let ListePanier = [];
 //recupere dans le localstorage l'objet contact et produits du panier
 const recupCommande = () => {
   //stock le panier et l'objet contact
-  let ListePanier = [];
   let contact = null;
 
-  let temppanier = JSON.parse(localStorage.getItem("panier"));
+  let temppanier = Utils.getLocalStore("panier");
   if (temppanier != null) ListePanier = temppanier;
 
   let tempcontact = JSON.parse(localStorage.getItem("contact"));
@@ -25,10 +25,15 @@ const recupCommande = () => {
     return false;
   }
 };
-
+//recupere qunatity dans le panier
+const recupQuantiteProduit = (id) => {
+  for (const prod of ListePanier) {
+    if (prod._id == id) return parseInt(prod.quantity);
+  }
+  return 1;
+};
 //Reception des donnée de la reponse du serveur (si de la status reponse = ok)
 const traitementReponseOk = (data) => {
-  console.log(data);
   if (data || data.contact || data.products || data.orderId) {
     //affichage dans la page
     document.getElementById("status-commande").innerHTML =
@@ -42,8 +47,8 @@ const traitementReponseOk = (data) => {
     const tbodyDetails = document.getElementById("tbody-details");
     let totalArticles = 0;
     for (const product of data.products) {
-      console.log(product);
-      totalArticles += product.price;
+      let nbrProduit = recupQuantiteProduit(product._id);
+      totalArticles += product.price * nbrProduit;
       tbodyDetails.innerHTML += `<tr>
                                   <td>
                                     <div class="d-flex flex-wrap">
@@ -54,24 +59,28 @@ const traitementReponseOk = (data) => {
                                             <p class="text-primary fs-4 my-0">${
                                               product.name
                                             }</p>
-                                            <p class="text-muted fs-5 mx-1 my-0">x 1</p>
+                                            <p class="text-muted fs-5 mx-1 my-0">x ${nbrProduit}</p>
                                           </div>
                                       </div>
                                     </td>
                                   <td class="align-middle text-center text-nowrap text-black-50 px-3 fs-5">${(
-                                    product.price / 100
+                                    (product.price * nbrProduit) / 100
                                   )
                                     .toString()
                                     .replace(".", ",")} €</td>
                               </tr>`;
     }
-    document.getElementById('total-details').textContent=`${(totalArticles / 100).toString().replace(".", ",")} €`
+    document.getElementById("total-details").textContent = `${(
+      totalArticles / 100
+    )
+      .toString()
+      .replace(".", ",")} €`;
     //comme tout s'est bien passé on supprime le panier du local storage
-    localStorage.removeItem('panier');  
+    localStorage.removeItem("panier");
   }
 };
 // Traitement d'une mauvaise reponse du serveur
-const traitementReponseMauvaise = (erreur,panier) => {
+const traitementReponseMauvaise = (erreur, panier) => {
   //affichage dans la page
   console.log(erreur);
   const statCommande = document.getElementById("status-commande");
@@ -82,9 +91,9 @@ const traitementReponseMauvaise = (erreur,panier) => {
     .getElementById("reponse-details")
     .classList.replace("reponse-details-ok", "reponse-details-erreur");
   //
-  document.getElementById(
-    "details-entete"
-  ).innerHTML = `${panier ? "" : "Votre commande n'a pas été valider : "}
+  document.getElementById("details-entete").innerHTML = `${
+    panier ? "" : "Votre commande n'a pas été valider : "
+  }
   <br/><span class="text-danger">${erreur}</span>`;
   //
   document.getElementById("details-corps").innerHTML =
@@ -108,12 +117,11 @@ const postCommande = (order) => {
       }
     })
     .then(function (data) {
-      if (data){
-         traitementReponseOk(data);
-      }else{
-        throw "Les données de la commande n'ont pas pu etre récupéré"
+      if (data) {
+        traitementReponseOk(data);
+      } else {
+        throw "Les données de la commande n'ont pas pu etre récupéré";
       }
-     
     })
     .catch(function (err) {
       // Une erreur est survenue
@@ -127,11 +135,11 @@ function validationCommande() {
   recupCommande()
     ? postCommande(commande)
     : traitementReponseMauvaise(
-        "Les données enregistrés de votre panier n'ont pas pu être récupéré",true
+        "Les données enregistrés de votre panier n'ont pas pu être récupéré",
+        true
       );
 }
 window.addEventListener("DOMContentLoaded", () => {
-    // Une fois que la page est chargé
-validationCommande();
+  // Une fois que la page est chargé
+  validationCommande();
 });
-
